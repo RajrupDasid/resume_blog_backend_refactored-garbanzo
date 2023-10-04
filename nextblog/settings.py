@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 from decouple import config
 import os
@@ -15,17 +16,32 @@ SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if config('DEBUG') == "True" else False
-print(DEBUG)
-PRODUCTION = True if config('PRODUCTION') == "True" else False
 
+PRODUCTION = True if config('PRODUCTION') == "True" else False
+IS_REDIS = True if config('IS_REDIS') == "True" else False
+IS_MEMCACHED = True if config('IS_MEMCACHED') == "True" else False
+
+if DEBUG:
+    CSRF_TRUSTED_ORIGINS = [
+        'http://localhost:3000',
+        'http://localhost:8000',
+    ]
 
 ALLOWED_HOSTS = ["*"]
-
+if DEBUG:
+    CORS_ORIGIN_WHITELIST = [
+        'http://localhost:5173',
+        'http://localhost:8000'
+    ]
 
 # Application definition
 
 INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
+    'analytics.apps.AnalyticsConfig',
+    'ckeditor',
+    'ckeditor_uploader',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -34,12 +50,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'controller.apps.ControllerConfig',
     'rest_framework',
-    'analytics.apps.AnalyticsConfig',
-    'ckeditor',
-    'ckeditor_uploader',
+    "rest_framework_api_key",
+    'taggit',
+
 
 ]
-
+# # channel layers
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels.layers.InMemoryChannelLayer',
+#     },
+# }
 
 if PRODUCTION:
     MIDDLEWARE = [
@@ -53,6 +74,7 @@ if PRODUCTION:
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        # 'analyticsapp.middlewares.TrackIPAddressMiddleware'
     ]
     CACHE_MIDDLEWARE_ALIAS = "default"
     CACHE_MIDDLEWARE_SECONDS = 600
@@ -67,6 +89,8 @@ else:
         'django.contrib.auth.middleware.AuthenticationMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        # 'analyticsapp.middlewares.TrackIPAddressMiddleware'
+
     ]
 
 
@@ -92,8 +116,7 @@ WSGI_APPLICATION = 'nextblog.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 if PRODUCTION:
     DATABASES = {
         'default': {
@@ -103,7 +126,9 @@ if PRODUCTION:
             'USER': config('DB_USER'),
             'PASSWORD': config('SUPABASE_PASSWORD'),
             'PORT': config('PORT'),
-            'CERT': 'prod-ca-2021.crt'
+            'OPTIONS': {
+                'sslmode': 'require',
+            },
         }
     }
 else:
@@ -114,7 +139,7 @@ else:
         }
     }
 
-if PRODUCTION:
+if PRODUCTION and IS_REDIS:
     CACHE_TTL = 50 * 15
     CACHES = {
         "default": {
@@ -131,10 +156,18 @@ if PRODUCTION:
     }
     SESSION_ENGINE = config("SESSION_ENGINE")
     SESSION_CACHE_ALIAS = config("SESSION_CACHE_ALIAS")
+elif IS_MEMCACHED:
+    CACHE_TTL = 3600
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+            'LOCATION': '127.0.0.1:11211',
+        }
+    }
+    SESSION_ENGINE = config("SESSION_ENGINE")
+    SESSION_CACHE_ALIAS = config("SESSION_CACHE_ALIAS")
 else:
     CACHE_TTL = 0 * 0
-
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -179,7 +212,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js'
+CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_IMAGE_BACKEND = "pillow"
 CKEDITOR_CONFIGS = {
@@ -194,23 +227,59 @@ CKEDITOR_CONFIGS = {
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework_api_key.permissions.HasAPIKey',
+    ),
 }
+
 REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = (
     "rest_framework.renderers.JSONRenderer",
 )
+"""Simple JWT related settings"""
 
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=10),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': False,
+    'UPDATE_LAST_LOGIN': False,
+
+    'ALGORITHM': 'HS512',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+    'JWK_URL': None,
+    'LEEWAY': 0,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'USER_AUTHENTICATION_RULE': 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+    'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
+
+    'JTI_CLAIM': 'jti',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=60),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=10),
+    'AUTH_TOKEN_SAMESITE': 'None',
+}
 """ CORS origin settings"""
-CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:3000",
-    "http://localhost:3000"
 
-]
 CORS_ALLOWED_METHODS = [
     'GET',
     'POST',
 ]
+
+
 CORS_ORIGIN_ALLOW_ALL = False
 
-PASSWORD_RESET_TIME_OUT = 900
+PASSWORD_RESET_TIME_OUT = 900  # in seconds
+
 # Logging setup
