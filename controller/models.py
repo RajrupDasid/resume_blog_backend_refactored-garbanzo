@@ -24,6 +24,10 @@ def random_string_generator(size=43, char=string.ascii_lowercase+string.digits):
     return ''.join(random.choice(char) for _ in range(size))
 
 
+def random_id_generator(size=15, char=string.ascii_lowercase+string.digits):
+    return ''.join(random.choice(char) for _ in range(size))
+
+
 def thumbnail_upload_location(instance, filename):
     random_chars = get_random_string(22)
     image_file = random_chars
@@ -95,3 +99,17 @@ class Blog(models.Model):
 
     def get_absolute_url(self):
         return reverse('article-detail', kwargs={'slug': self.slug})
+
+
+class Contact(models.Model):
+    _id = models.CharField(default=random_id_generator,
+                           blank=True, null=False, primary_key=True, max_length=900)
+    username = models.CharField(
+        max_length=255, blank=True, null=True, default=None)
+    email = models.EmailField(default=None, blank=True, null=True)
+    message = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f"user with id {self._id} and name {self.username} contacted around {self.created}"
