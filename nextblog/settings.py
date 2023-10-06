@@ -21,18 +21,17 @@ PRODUCTION = True if config('PRODUCTION') == "True" else False
 IS_REDIS = True if config('IS_REDIS') == "True" else False
 IS_MEMCACHED = True if config('IS_MEMCACHED') == "True" else False
 
+# Statement interface for debug
 if DEBUG:
     CSRF_TRUSTED_ORIGINS = [
-        'http://localhost:3000',
-        'http://localhost:8000',
+        'http://localhost:5173',
     ]
-
-ALLOWED_HOSTS = ["*"]
-if DEBUG:
     CORS_ORIGIN_WHITELIST = [
         'http://localhost:5173',
-        'http://localhost:8000'
+
     ]
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+# Statement interface for prodcution control
 
 # Application definition
 
@@ -225,12 +224,13 @@ CKEDITOR_CONFIGS = {
 
 
 REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework_api_key.permissions.HasAPIKey",
+    ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework_api_key.permissions.HasAPIKey',
-    ),
+    )
+
 }
 
 REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = (
