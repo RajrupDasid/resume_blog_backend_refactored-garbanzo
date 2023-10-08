@@ -2,6 +2,7 @@ from datetime import timedelta
 from pathlib import Path
 from decouple import config
 import os
+import boto3
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -69,6 +70,7 @@ INSTALLED_APPS = [
     'rest_framework',
     "rest_framework_api_key",
     'taggit',
+    'storages'
 
 
 ]
@@ -301,13 +303,29 @@ CORS_ORIGIN_ALLOW_ALL = False
 PASSWORD_RESET_TIME_OUT = 900  # in seconds
 
 # Logging setup
+# HTTPS settings
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+##
+# HSTS settings
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
 if PRODUCTION:
-    AWS_ACCESS_KEY_ID = 'AWS_ACCESS_KEY_ID '
-    AWS_SECRET_ACCESS_KEY = 'AWS_SECRET_ACCESS_KEY'
-    AWS_STORAGE_BUCKET_NAME = 'AWS_STORAGE_BUCKET_NAME'
+    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
     AWS_S3_SIGNATURE_NAME = 's3v4',
-    AWS_S3_REGION_NAME = 'AWS_S3_REGION_NAME'
+    AWS_S3_REGION_NAME = config('AWS_S3_REGION_NAME')
     AWS_S3_FILE_OVERWRITE = False
     AWS_DEFAULT_ACL = None
     AWS_S3_VERITY = True
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STATICFILES_STORAGE = "storages.backends.s3.S3Storage"
+    S_MODE = "static"
+    M_MODE = "media"
+    STATIC_URL = f'http://{AWS_S3_CUSTOM_DOMAIN}/{S_MODE}/'
+    MEDIA_URL = f'http://{AWS_S3_CUSTOM_DOMAIN}/{M_MODE}/'
