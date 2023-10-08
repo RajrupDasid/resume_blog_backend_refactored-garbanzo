@@ -24,13 +24,31 @@ IS_MEMCACHED = True if config('IS_MEMCACHED') == "True" else False
 # Statement interface for debug
 if DEBUG:
     CSRF_TRUSTED_ORIGINS = [
-        'http://localhost:5173',
+        'http://localhost:3000',
+        'http://127.0.0.1:8000',
     ]
     CORS_ORIGIN_WHITELIST = [
-        'http://localhost:5173',
+        'http://localhost:3000',
+        'http://127.0.0.1:8000',
 
     ]
     ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+
+PRODUCTION_SITE_ONE = config("PRODUCTION_SITE")
+PRODUCTION_SITE_TWO = config("PRODUCTION_SITE_TWO")
+
+if PRODUCTION:
+    CSRF_TRUSTED_ORIGINS = [
+        PRODUCTION_SITE_ONE,
+        PRODUCTION_SITE_TWO
+    ]
+    CORS_ORIGIN_WHITELIST = [
+        PRODUCTION_SITE_ONE,
+        PRODUCTION_SITE_TWO
+
+    ]
+    ALLOWED_HOSTS = [PRODUCTION_SITE_ONE, PRODUCTION_SITE_TWO]
+
 # Statement interface for prodcution control
 
 # Application definition
@@ -283,3 +301,13 @@ CORS_ORIGIN_ALLOW_ALL = False
 PASSWORD_RESET_TIME_OUT = 900  # in seconds
 
 # Logging setup
+if PRODUCTION:
+    AWS_ACCESS_KEY_ID = 'AWS_ACCESS_KEY_ID '
+    AWS_SECRET_ACCESS_KEY = 'AWS_SECRET_ACCESS_KEY'
+    AWS_STORAGE_BUCKET_NAME = 'AWS_STORAGE_BUCKET_NAME'
+    AWS_S3_SIGNATURE_NAME = 's3v4',
+    AWS_S3_REGION_NAME = 'AWS_S3_REGION_NAME'
+    AWS_S3_FILE_OVERWRITE = False
+    AWS_DEFAULT_ACL = None
+    AWS_S3_VERITY = True
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
