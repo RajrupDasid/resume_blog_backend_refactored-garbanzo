@@ -78,15 +78,24 @@ class Blog(models.Model):
             output.seek(0)
             self.thumbnail = InMemoryUploadedFile(output, 'ImageField', "%s.webp" % self.thumbnail.name.join(
                 random_string_generator()).split('.')[0:10], 'thumbnail/webp', len(output.getbuffer()), None)
+       # Generate a unique slug and remove stop words
         original_slug = slugify(self.title)
-        queryset = Blog.objects.all().filter(slug__iexact=original_slug).count()
+        stop_words = ["a", "an", "the", "and", "in", "on", "with", "of", "etc"]
+        words = original_slug.split("-")
+        cleaned_slug = "-".join([word for word in words if word not in stop_words])
+        queryset = Blog.objects.filter(slug__iexact=cleaned_slug)
+        if self.pk:
+            queryset = queryset.exclude(pk=self.pk)
+
+        # Handle slug conflicts
         count = 1
-        slug = original_slug
-        while (queryset):
-            slug = original_slug + '-' + str(count)
+        slug = cleaned_slug
+        while queryset.filter(slug=slug).exists():
+            slug = f"{cleaned_slug}-{count}"
             count += 1
-            queryset = Blog.objects.all().filter(slug__iexact=slug).count()
         self.slug = slug
+
+        # Ensure only one blog is featured at a time
         if self.featured:
             try:
                 temp = Blog.objects.get(featured=True)
@@ -95,6 +104,7 @@ class Blog(models.Model):
                     temp.save()
             except Blog.DoesNotExist:
                 pass
+
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):

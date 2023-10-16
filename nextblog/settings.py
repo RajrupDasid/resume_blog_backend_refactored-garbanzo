@@ -23,32 +23,49 @@ IS_REDIS = True if config('IS_REDIS') == "True" else False
 IS_MEMCACHED = True if config('IS_MEMCACHED') == "True" else False
 
 # Statement interface for debug
+main_domain = config("MAINDOMAIN")
+api_domain = config("APIDOMAIN")
+CORS_ORIGIN_ALLOW_ALL = False
 if DEBUG:
+
     CSRF_TRUSTED_ORIGINS = [
-        'http://localhost:3000',
         'http://127.0.0.1:8000',
+        'http://localhost:3000',
     ]
     CORS_ORIGIN_WHITELIST = [
-        'http://localhost:3000',
         'http://127.0.0.1:8000',
+        'http://localhost:3000',
 
     ]
-    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+    ALLOWED_HOSTS = ["*"]
 
-PRODUCTION_SITE_ONE = config("PRODUCTION_SITE")
-PRODUCTION_SITE_TWO = config("PRODUCTION_SITE_TWO")
 
 if PRODUCTION:
+    redirectdomain = config("REDIRECT_SITE"),
+    maindomain = config("PRODUCTION_SITE")
+    apidomain = config("PRODUCTION_SITE_TWO")
+    blogdomain = config("BLOG_API")
+    website = config("WEBSTACKPROS")
+    localsite = config("Localsite")
     CSRF_TRUSTED_ORIGINS = [
-        PRODUCTION_SITE_ONE,
-        PRODUCTION_SITE_TWO
+        f"{website}",
+        f"{localsite}"
+        f"{maindomain}",
+        f"{apidomain}",
+        f"{redirectdomain}",
+        f"{blogdomain}",
     ]
     CORS_ORIGIN_WHITELIST = [
-        PRODUCTION_SITE_ONE,
-        PRODUCTION_SITE_TWO
+        f"{website}",
+        f"{localsite}",
+        f"{maindomain}",
+        f"{apidomain}",
+        f"{redirectdomain}",
+        f"{blogdomain}",
 
     ]
-    ALLOWED_HOSTS = [PRODUCTION_SITE_ONE, PRODUCTION_SITE_TWO]
+    ALLOWED_HOSTS = ["*"]
+
 
 # Statement interface for prodcution control
 
@@ -238,8 +255,8 @@ CKEDITOR_CONFIGS = {
     'default': {
         'removePlugins': 'stylesheetparser',
         'toolbar': 'full',
-        'height': 900,
-        'width': 900,
+        'height': 500,
+        'width': 1380,
     },
 }
 
@@ -298,8 +315,6 @@ CORS_ALLOWED_METHODS = [
     'POST',
 ]
 
-
-CORS_ORIGIN_ALLOW_ALL = False
 
 PASSWORD_RESET_TIME_OUT = 900  # in seconds
 
