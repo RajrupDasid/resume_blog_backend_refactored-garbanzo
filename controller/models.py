@@ -54,7 +54,7 @@ class Blog(models.Model):
     thumbnail = models.ImageField(
         upload_to=thumbnail_upload_location, null=True, blank=True, default=None)
     files = models.FileField(upload_to=media_file_upload,
-                             null=True, blank=True, default=None, max_length=1000000000)
+                             null=True, blank=True, default=None, max_length=355)
     category = models.CharField(
         max_length=255, null=True, blank=True, unique=True)
     slug = models.SlugField(max_length=500, unique=True)
