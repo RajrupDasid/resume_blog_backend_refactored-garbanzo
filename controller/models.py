@@ -45,6 +45,10 @@ def media_file_upload(instance, filename):
     return os.path.join(random_uuid(), file_description, random_file_name, file_name)
 
 
+def normalize_catrgory(category):
+    return slugify(category)
+
+
 class Blog(models.Model):
     _id = models.CharField(default=random_string_generator,
                            blank=False, null=False, auto_created=True, max_length=900)
@@ -80,6 +84,9 @@ class Blog(models.Model):
             output.seek(0)
             self.thumbnail = InMemoryUploadedFile(output, 'ImageField', "%s.webp" % self.thumbnail.name.join(
                 random_string_generator()).split('.')[0:10], 'thumbnail/webp', len(output.getbuffer()), None)
+        if self.category:
+            self.category = normalize_catrgory(self.category)
+
        # Generate a unique slug and remove stop words
         original_slug = slugify(self.title)
         stop_words = ["a", "an", "the", "and", "in", "on", "with", "of", "etc"]

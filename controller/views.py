@@ -33,8 +33,8 @@ class BlogDetailView(APIView):
     permission_classes = [HasAPIKey]
 
     @method_decorator(cache_page(CACHE_TTL))
-    def get(self, request, slug, *args, **kwargs):
-        slug = get_object_or_404(Blog, slug=slug)
+    def get(self, request, category, slug, *args, **kwargs):
+        slug = get_object_or_404(Blog, category=category, slug=slug)
         serializer = BlogDetailSerializer(slug)
         return Response(serializer.data)
 
