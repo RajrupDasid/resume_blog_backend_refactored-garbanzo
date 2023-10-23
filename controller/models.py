@@ -60,7 +60,7 @@ class Blog(models.Model):
     files = models.FileField(upload_to=media_file_upload,
                              null=True, blank=True, default=None, max_length=355)
     category = models.CharField(
-        max_length=255, null=True, blank=True, unique=True)
+        max_length=255, null=True, blank=True)
     slug = models.SlugField(max_length=500, unique=True)
     tags = TaggableManager(blank=True)
     content = RichTextUploadingField(default=None, blank=True, null=True)
