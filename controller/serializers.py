@@ -5,7 +5,6 @@ from taggit.serializers import (TagListSerializerField,
                                 TaggitSerializer)
 
 
-
 class BlogViewSerializer(TaggitSerializer, serializers.ModelSerializer):
     tags = TagListSerializerField()
 
@@ -26,3 +25,16 @@ class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
         fields = '__all__'
+
+
+class SearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Blog
+        fields = '__all__'
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Blog
+        fields = ['_id', 'title', 'thumbnail', 'category', 'slug',
+                  'content', 'featured', 'created', 'updated']

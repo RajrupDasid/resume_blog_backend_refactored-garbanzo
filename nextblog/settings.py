@@ -255,8 +255,8 @@ CKEDITOR_CONFIGS = {
     'default': {
         'removePlugins': 'stylesheetparser',
         'toolbar': 'full',
-        'height': 500,
-        'width': 1380,
+        'height': 1000,
+        'width': 1480,
     },
 }
 

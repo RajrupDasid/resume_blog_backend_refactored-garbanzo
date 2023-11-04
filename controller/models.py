@@ -60,7 +60,7 @@ class Blog(models.Model):
     files = models.FileField(upload_to=media_file_upload,
                              null=True, blank=True, default=None, max_length=355)
     category = models.CharField(
-        max_length=255, null=True, blank=True, unique=True)
+        max_length=255, null=True, blank=True)
     slug = models.SlugField(max_length=500, unique=True)
     tags = TaggableManager(blank=True)
     content = RichTextUploadingField(default=None, blank=True, null=True)
@@ -73,14 +73,14 @@ class Blog(models.Model):
         return f"Blog has been generate with id {self._id} | with title {self.title} | at {self.created}"
 
     def save(self, *args, **kwargs):
-        if self.thumbnail:
+        if self.thumbnail and self.thumbnail != self._get_old_thumbnail():
             img = Img.open(BytesIO(self.thumbnail.read()))
             if img.mode != 'RGB':
                 img = img.convert('RGB')
             img.thumbnail((self.thumbnail.width / 1.5,
                           self.thumbnail.height / 1.5), Img.BOX)
             output = BytesIO()
-            img.save(output, format='WebP', quality=95)
+            img.save(output, format='WebP', quality=85)
             output.seek(0)
             self.thumbnail = InMemoryUploadedFile(output, 'ImageField', "%s.webp" % self.thumbnail.name.join(
                 random_string_generator()).split('.')[0:10], 'thumbnail/webp', len(output.getbuffer()), None)
@@ -115,6 +115,11 @@ class Blog(models.Model):
                 pass
 
         super().save(*args, **kwargs)
+
+    def _get_old_thumbnail(self):
+        if self.pk:
+            return Blog.objects.get(pk=self.pk).thumbnail
+        return None
 
     def get_absolute_url(self):
         return reverse('article-detail', kwargs={'slug': self.slug})
