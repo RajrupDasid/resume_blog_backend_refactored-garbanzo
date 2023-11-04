@@ -36,5 +36,5 @@ class SearchSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
-        fields = ['title', 'thumbnail', 'category', 'slug',
+        fields = ['_id', 'title', 'thumbnail', 'category', 'slug',
                   'content', 'featured', 'created', 'updated']
