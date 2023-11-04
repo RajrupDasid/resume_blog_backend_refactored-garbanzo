@@ -73,7 +73,7 @@ class CategoryView(APIView):
 
     @method_decorator(cache_page(CACHE_TTL))
     def get(self, request, category, *args, **kwargs):
-        fetchcategory = get_object_or_404(Blog, category=category)
-        serializer = CategorySerializer(fetchcategory)
+        fetchcategory = Blog.objects.filter(category=category)
+        serializer = CategorySerializer(fetchcategory, many=True)
         response = serializer.data
         return Response(response)
