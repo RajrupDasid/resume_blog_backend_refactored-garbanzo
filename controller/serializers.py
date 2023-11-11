@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Blog, Contact
+from analytics.models import Analytics
 
 from taggit.serializers import (TagListSerializerField,
                                 TaggitSerializer)
@@ -38,3 +39,9 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Blog
         fields = ['_id', 'title', 'thumbnail', 'category', 'slug',
                   'content', 'featured', 'created', 'updated']
+
+
+class AnalyticsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Analytics
+        fields = '__all__'  # Include all fields from the Analytics model
