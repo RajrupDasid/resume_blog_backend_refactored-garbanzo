@@ -12,6 +12,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.urls import reverse
 from taggit.managers import TaggableManager
+from analytics.models import Analytics
 # Create your models here.
 
 
@@ -64,7 +65,8 @@ class Blog(models.Model):
     slug = models.SlugField(max_length=500, unique=True)
     tags = TaggableManager(blank=True)
     content = RichTextUploadingField(default=None, blank=True, null=True)
-
+    analytics = models.ForeignKey(
+        Analytics, on_delete=models.CASCADE, related_name="analytics", blank=True, null=True, default=None)
     featured = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -77,10 +79,12 @@ class Blog(models.Model):
             img = Img.open(BytesIO(self.thumbnail.read()))
             if img.mode != 'RGB':
                 img = img.convert('RGB')
+            if img.mode != 'RGBA' and img.format is 'PNG':
+                img = img.convert('RGBA')
             img.thumbnail((self.thumbnail.width / 1.5,
                           self.thumbnail.height / 1.5), Img.BOX)
             output = BytesIO()
-            img.save(output, format='WebP', quality=85)
+            img.save(output, format='WebP', quality=80)
             output.seek(0)
             self.thumbnail = InMemoryUploadedFile(output, 'ImageField', "%s.webp" % self.thumbnail.name.join(
                 random_string_generator()).split('.')[0:10], 'thumbnail/webp', len(output.getbuffer()), None)
