@@ -23,6 +23,9 @@ class Analytics(models.Model):
     screen_resolution = models.CharField(max_length=255, null=True, blank=True)
     operating_system = models.CharField(max_length=255, null=True, blank=True)
     button_clicks = models.IntegerField(default=0)
+    post_id = models.CharField(
+        max_length=255, default=None, null=True, blank=True)
+    post_clicks = models.IntegerField(default=0)
     form_submissions = models.IntegerField(default=0)
     video_views = models.IntegerField(default=0)
     conversions = models.IntegerField(default=0)
