@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework import permissions
 from .models import Blog
-from .serializers import BlogViewSerializer, BlogDetailSerializer, ContactSerializer, SearchSerializer, CategorySerializer, AnalyticsSerializer
+from .serializers import BlogViewSerializer, BlogDetailSerializer, ContactSerializer, SearchSerializer, CategorySerializer, AnalyticsSerializer, TrendingSerializer
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework_api_key.permissions import HasAPIKey
@@ -13,6 +13,7 @@ from rest_framework import status
 from django.conf import settings
 from django.db.models import Q
 from analytics.models import Analytics
+import json
 
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
@@ -105,3 +106,17 @@ class PostClickCounter(APIView):
 
         serializer = AnalyticsSerializer(analytics_instance)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class TrendingPostView(APIView):
+    permission_classes = [HasAPIKey]
+
+    @method_decorator(cache_page(CACHE_TTL))
+    def get(self, request, *args, **kwargs):
+        post_ids = Analytics.objects.filter(
+            post_clicks__gte=5).exclude(post_id__isnull=True).values('post_id')
+        trending_data = Blog.objects.filter(
+            _id__in=post_ids).order_by('-created')[:8]
+        serializer = BlogViewSerializer(trending_data, many=True)
+        response = serializer.data
+        return Response(response)

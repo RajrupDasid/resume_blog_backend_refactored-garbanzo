@@ -45,3 +45,9 @@ class AnalyticsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Analytics
         fields = '__all__'  # Include all fields from the Analytics model
+
+
+class TrendingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Analytics
+        fields = ['post_id', 'post_clicks']

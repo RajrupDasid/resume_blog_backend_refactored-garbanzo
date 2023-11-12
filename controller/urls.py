@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import IndexAPIView, BlogDetailView, Contact, SearchView, CategoryView, PostClickCounter
+from .views import IndexAPIView, BlogDetailView, Contact, SearchView, CategoryView, PostClickCounter, TrendingPostView
 
 urlpatterns = [
     path('blogs/', IndexAPIView.as_view(), name="index"),
@@ -8,5 +8,6 @@ urlpatterns = [
     path('contacts/', Contact.as_view(), name="contactview"),
     path('search', SearchView.as_view(), name="search"),
     path('category/<str:category>', CategoryView.as_view(), name="category"),
-    path('logVisit', PostClickCounter.as_view(), name='analytics')
+    path('logVisit', PostClickCounter.as_view(), name='analytics'),
+    path('trending', TrendingPostView.as_view(), name='trendingposts')
 ]
