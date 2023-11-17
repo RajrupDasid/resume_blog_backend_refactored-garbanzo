@@ -2,7 +2,6 @@ from datetime import timedelta
 from pathlib import Path
 from decouple import config
 import os
-import boto3
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,8 +22,9 @@ IS_REDIS = True if config('IS_REDIS') == "True" else False
 IS_MEMCACHED = True if config('IS_MEMCACHED') == "True" else False
 
 # Statement interface for debug
-main_domain = config("MAINDOMAIN")
-api_domain = config("APIDOMAIN")
+if DEBUG:
+    main_domain = config("MAINDOMAIN")
+    api_domain = config("APIDOMAIN")
 CORS_ORIGIN_ALLOW_ALL = False
 if DEBUG:
 
@@ -41,7 +41,7 @@ if DEBUG:
 
 
 if PRODUCTION:
-    redirectdomain = config("REDIRECT_SITE"),
+    # redirectdomain = config("REDIRECT_SITE"),
     maindomain = config("PRODUCTION_SITE")
     apidomain = config("PRODUCTION_SITE_TWO")
     blogdomain = config("BLOG_API")
@@ -52,7 +52,7 @@ if PRODUCTION:
         f"{localsite}"
         f"{maindomain}",
         f"{apidomain}",
-        f"{redirectdomain}",
+        # f"{redirectdomain}",
         f"{blogdomain}",
     ]
     CORS_ORIGIN_WHITELIST = [
@@ -60,7 +60,7 @@ if PRODUCTION:
         f"{localsite}",
         f"{maindomain}",
         f"{apidomain}",
-        f"{redirectdomain}",
+        # f"{redirectdomain}",
         f"{blogdomain}",
 
     ]
@@ -257,6 +257,10 @@ CKEDITOR_CONFIGS = {
         'toolbar': 'full',
         'height': 1000,
         'width': 1480,
+        'extraPlugins': ','.join(
+            [
+                'codesnippet',
+            ]),
     },
 }
 
