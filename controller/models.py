@@ -68,6 +68,7 @@ class Blog(models.Model):
     analytics = models.ForeignKey(
         Analytics, on_delete=models.CASCADE, related_name="analytics", blank=True, null=True, default=None)
     featured = models.BooleanField(default=False)
+    archive = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -79,7 +80,7 @@ class Blog(models.Model):
             img = Img.open(BytesIO(self.thumbnail.read()))
             if img.mode != 'RGB':
                 img = img.convert('RGB')
-            if img.mode != 'RGBA' and img.format is 'PNG':
+            if img.mode != 'RGBA' and img.format == 'PNG':
                 img = img.convert('RGBA')
             img.thumbnail((self.thumbnail.width / 1.5,
                           self.thumbnail.height / 1.5), Img.BOX)
@@ -126,7 +127,29 @@ class Blog(models.Model):
         return None
 
     def get_absolute_url(self):
-        return reverse('article-detail', kwargs={'slug': self.slug})
+        return reverse('detailview', kwargs={'category': self.category, 'slug': self.slug})
+
+    @property
+    def blogid(self):
+        return self._id
+
+
+class Comment(models.Model):
+    name = models.CharField(
+        max_length=255, default=None, blank=True, null=True)
+    email = models.EmailField(
+        max_length=255, default=None, blank=True, null=True)
+    subject = models.CharField(
+        max_length=255, default=None, null=True, blank=True)
+    comment = models.TextField(null=True, blank=True, default=None)
+    created = models.DateTimeField(auto_now_add=True)
+    update = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f"comment author name {self.name}, comment author email {self.email}"
+
+    class Meta:
+        ordering = ['-created']
 
 
 class Contact(models.Model):
@@ -135,6 +158,8 @@ class Contact(models.Model):
     username = models.CharField(
         max_length=255, blank=True, null=True, default=None)
     email = models.EmailField(default=None, blank=True, null=True)
+    subject = models.CharField(
+        max_length=255, blank=True, null=True, default=None)
     message = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

@@ -4,8 +4,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from decouple import config
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('controller.urls')),
+    path(config('ADMIN'), admin.site.urls),
+    path('', include('controller.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 if settings.DEBUG:

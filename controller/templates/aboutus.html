@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+<title>{% block title %}{{websitename}} | About us Thanks for visiting About us page {% endblock %}</title>
+{% block content %}
+  <header class="abouttop">
+    <div class="aboutme">About Us :</div>
+  </header>
+  <section class="firstabout">
+    <div class="circular--landscape">
+      <img src="path/to/your/coder-image.jpg" alt="coder">
+    </div>
+    <div class="rightabout">
+      <h1>Hello from Webstackpros team</h1>
+      <p>
+        <span class="leamon">We are a team of professional engineers</span>
+      </p>
+    </div>
+  </section>
+  <hr>
+  <div class="py-10">
+    <div className="tcontainer">
+      <!-- tech stack-->
+      <div className="techstack">
+        <div className="weapon">
+          <span className="textgrey">Our experties</span>
+          <h1> We use latest Tech Stacks</h1>
+        </div>
+        <div className="toptech">
+          <div className="top">
+            <div className="tech1 icon-container">
+              <p>
+                <TbBrandNextjs size={40} />
+              </p>
+            </div>
+          </div>
+          <div className="top">
+            <div className="tech2 icon-container">
+              <p>
+                <ion-icon name="logo-nodejs"></ion-icon>
+              </p>
+            </div>
+          </div>
+          <div className="top">
+            <div className="tech3 icon-container">
+              <ion-icon name="logo-python"></ion-icon>
+            </div>
+          </div>
+          <div className="top">
+            <div className="tech4 icon-container">
+              <ion-icon name="logo-html5"></ion-icon>
+            </div>
+          </div>
+        </div>
+        <div className="bottomtech">
+          <div className="bottom">
+            <div className="tech1 icon-container">
+              <p>
+                
+              </p>
+            </div>
+          </div>
+          <div className="bottom">
+            <div className="tech1 icon-container">
+              <p>
+                
+              </p>
+            </div>
+          </div>
+          <div className="bottom">
+            <div className="tech1 icon-container">
+              <p>
+                <ion-icon name="logo-github"></ion-icon>
+              </p>
+            </div>
+          </div>
+          <div className="bottom">
+            <div className="tech1 icon-container">
+              <p>
+                <ion-icon name="analytics-sharp"></ion-icon>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <section class="dessec">
+    <div class="below">
+      <div class="services-page">
+        <h1>Our Services</h1>
+        <div class="service-cards">
+          <!-- Service cards -->
+          <div class="service-card">
+            <div class="card-image" style="background-image: url('')"></div>
+            <div class="card-content">
+              <h2>Security System</h2>
+              <p>We have experience developing robust security systems that can prevent cloud-to-application exploits</p>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="card-image" style="background-image: url('path/to/your/image2.jpg')"></div>
+            <div class="card-content">
+              <h2>Ecommerce Management with CMS</h2>
+              <p>We took expertise in making automatic ecommerce applications</p>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="card-image" style="background-image: url('path/to/your/image3.jpg')"></div>
+            <div class="card-content">
+              <h2>Phishing detection tool</h2>
+              <p>We have developed a phishing and malware detection tool to prevent users from accessing malicious websites</p>
+            </div>
+          </div>
+          <!-- Add more service cards as needed -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}
