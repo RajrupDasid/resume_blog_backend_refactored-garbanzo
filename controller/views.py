@@ -54,6 +54,7 @@ def index(request):
             'categories': categories,
             'websitename': indexname,
             'trending': trending_data,
+
         }
         return render(request, 'index.html', context)
     else:
@@ -144,8 +145,13 @@ def postcounter(request):
 def contactview(request):
     indexname = websitenames
     if request.method == "GET":
+        breadcrumbs = [
+            {'title': 'Home', 'url': '/'},
+            {'title': 'Contact', 'url': '/contact'}
+        ]
         context = {
             'websitename': indexname,
+            'breadcrumbs': breadcrumbs,
         }
         return render(request, 'contact.html', context)
     if request.method == "POST":
@@ -178,11 +184,16 @@ def category(request, category):
     trending_data = Blog.objects.filter(
         _id__in=post_ids).order_by('-created')[:10]
     # trending data ends
+    breadcrumbs = [
+        {'title': 'Home', 'url': '/'},
+        {'title': 'Category', 'url': 'category'}
+    ]
     context = {
         'page_obj': page_obj,
         'categories': categories,
         'trending': trending_data,
         'websitename': indexname,
+        "breadcrumbs": breadcrumbs,
     }
     return render(request, 'category.html', context)
 
@@ -190,8 +201,13 @@ def category(request, category):
 @cache_page(CACHE_TTL)
 def aboutus(request):
     indexname = websitenames
+    breadcrumbs = [
+        {'title': 'Home', 'url': '/'},
+        {'title': 'Aboutus', 'url': '/aboutus'}
+    ]
     context = {
         'websitename': indexname,
+        "breadcrumbs": breadcrumbs,
     }
     return render(request, 'aboutus.html', context)
 
@@ -245,6 +261,13 @@ def searchresult(request):
             post_clicks__gte=5).exclude(post_id__isnull=True).values('post_id')
         trending_data = Blog.objects.filter(
             _id__in=post_ids).order_by('-created')[:10]
+        breadcrumbs = [
+            {'title': 'Home', 'url': '/'},
+            {'title': 'Search Result', 'url': '/search'},
+            {
+                'title': f'{search_query}'
+            }
+        ]
         context = {
             'page_obj': page_obj,
             'categories': categories,

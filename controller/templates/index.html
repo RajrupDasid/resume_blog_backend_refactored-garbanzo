@@ -2,6 +2,7 @@
 {% load static %}
 <title>{% block title %}{{websitename}} | Welcome to Webstackpros.net Home page {% endblock %}</title>
 {% block content %}
+
     <!--================ Start banner Area =================-->
     <section class="home-banner-area relative">
       <div class="container-fluid">
@@ -37,6 +38,17 @@
         </ul>
       </div>
     </section>
+    <div class="container mt-5">
+      <nav aria-label="breadcrumb">
+          <ol class="breadcrumb" style="display: flex; flex-wrap: wrap;">
+              {% for breadcrumb in breadcrumbs %}
+                  <li class="breadcrumb-item">
+                      <a href="{{ breadcrumb.url }}"><ion-icon name="cloud-outline"></ion-icon> &nbsp;{{ breadcrumb.title }}</a>
+                  </li>
+              {% endfor %}
+          </ol>
+      </nav>
+    </div>
     <!--================ End banner Area =================-->
 
     <!--================ Start Blog Post Area =================-->
