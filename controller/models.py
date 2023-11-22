@@ -166,3 +166,15 @@ class Contact(models.Model):
 
     def __str__(self) -> str:
         return f"user with id {self._id} and name {self.username} contacted around {self.created}"
+
+
+class NewsLetter(models.Model):
+    _id = models.CharField(default=random_id_generator,
+                           blank=True, null=False, primary_key=True, max_length=900)
+
+    email = models.EmailField(default=None, blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f"user with id {self._id} hasbeem subscribed for newsletter"

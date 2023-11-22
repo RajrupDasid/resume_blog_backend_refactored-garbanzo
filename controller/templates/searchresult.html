@@ -2,7 +2,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<title>{% block title %}{{websitename}} | category {% endblock %}</title>
+<title>{% block title %}{{websitename}} | search result {% endblock %}</title>
     <!--================ Start Blog Post Area =================-->
   
     <section class="blog-post-area section-gap relative">
@@ -142,15 +142,16 @@
 </div>
           </div>
 
-          <!-- Start Blog Post Siddebar -->
-          <div class="col-lg-4 sidebar-widgets">
-              <div class="widget-wrap">
-                <div class="single-sidebar-widget search-widget">
-                  <form class="search-form" action="#">
-                    <input placeholder="Search Posts" name="search" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'">
-                    <button type="submit"><i class="fa fa-search"></i></button>
-                  </form>
-                </div>
+           <!-- Start Blog Post Siddebar -->
+           <div class="col-lg-4 sidebar-widgets">
+            <div class="widget-wrap">
+              <div class="single-sidebar-widget search-widget">
+                <form class="search-form" action="/searchresult" method="get">
+                  
+                  <input placeholder="Search Posts" name="search" id="search" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'">
+                  <button type="submit"><ion-icon name="search-outline"></ion-icon></button>
+                </form>
+              </div>
 
                 <div class="single-sidebar-widget instafeed-widget">
                   <h4 class="instafeed-title">Instagram</h4>

@@ -49,14 +49,14 @@
       						
               
               <div class="news_d_footer flex-column flex-sm-row">
-      							<a href="#"><i class="lnr lnr lnr-heart"></i>Lily and 4 people like this</a>
-      							<a class="justify-content-sm-center ml-sm-auto mt-sm-0 mt-2" href="#"><i class="lnr lnr lnr-bubble"></i>06 Comments</a>
+      							<!-- <a href="#"><i class="lnr lnr lnr-heart"></i>Lily and 4 people like this</a> -->
+      							<!-- <a class="justify-content-sm-center ml-sm-auto mt-sm-0 mt-2" href="#"><i class="lnr lnr lnr-bubble"></i>06 Comments</a> -->
       							<div class="news_socail ml-sm-auto mt-sm-0 mt-2">
-									<a href="#"><i class="fa fa-facebook"></i></a>
-									<a href="#"><i class="fa fa-twitter"></i></a>
-									<a href="#"><i class="fa fa-youtube-play"></i></a>
-									<a href="#"><i class="fa fa-pinterest"></i></a>
-									<a href="#"><i class="fa fa-rss"></i></a>
+									<a href="www.facebook.com "><ion-icon name="logo-facebook"></ion-icon></a>
+									<a href="www.twitter.com"><ion-icon name="logo-twitter"></ion-icon></a>
+									<a href="youtube.com"><ion-icon name="logo-youtube"></ion-icon></a>
+									<a href="pinterest.com"><ion-icon name="logo-pinterest"></ion-icon></a>
+									<a href="https://rss.com/blog/how-do-rss-feeds-work/"><ion-icon name="logo-rss"></ion-icon></a>
 								</div>
       						</div>
        					</div>
@@ -225,14 +225,15 @@
                         </div>
 					</div>
 					
-                    <div class="col-lg-4 sidebar-widgets">
+            <div class="col-lg-4 sidebar-widgets">
 						<div class="widget-wrap">
-						  <div class="single-sidebar-widget search-widget">
-							<form class="search-form" action="#">
-							  <input placeholder="Search Posts" name="search" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'">
-							  <button type="submit"><i class="fa fa-search"></i></button>
-							</form>
-						  </div>
+              <div class="single-sidebar-widget search-widget">
+                <form class="search-form" action="/searchresult" method="get">
+                  
+                  <input placeholder="Search Posts" name="search" id="search" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'">
+                  <button type="submit"><ion-icon name="search-outline"></ion-icon></button>
+                </form>
+              </div>
 		  
 						  <div class="single-sidebar-widget instafeed-widget">
 							<h4 class="instafeed-title">Instagram</h4>
@@ -269,7 +270,7 @@
                     <img class="img-fluid" src="{{ t.thumbnail.url }}" alt="popularpost image">
                   </div>
                   <div class="details mt-20">
-                    <a href="blog-single.html">
+                    <a href="{% url 'detailview' t.category t.slug %}">
                       <h6>{{t.content|safe|striptags|truncatechars:15}}</h6>
                     </a>
                     <p>{{t.author.username}}| {{t.created}}</p>
@@ -279,7 +280,7 @@
 							</div>
 						  </div>
 		  
-						  <div class="single-sidebar-widget newsletter-widget">
+						  <!-- <div class="single-sidebar-widget newsletter-widget">
 							<h4 class="newsletter-title">Newsletter</h4>
 							<div class="form-group mt-30">
 							  <div class="col-autos">
@@ -288,22 +289,22 @@
 							  </div>
 							</div>
 							<button class="bbtns d-block mt-20 w-100">Subcribe</button>
-						  </div>
+						  </div> -->
 		  
 							<div class="single-sidebar-widget share-widget">
 							  <h4 class="share-title">Share this post</h4>
 							  <div class="social-icons mt-20">
-								  <a href="www.facebook.com">
-                    <span class="ti-facebook"></span>
+                  <a href="www.facebook.com">
+                    <span class=""><ion-icon name="logo-facebook"></ion-icon></span>
                   </a>
                   <a href="www.twitter.com">
-                    <span class="ti-twitter"></span>
+                    <span class=""><ion-icon name="logo-twitter"></ion-icon></span>
                   </a>
                   <a href="www.pinterest.com">
-                    <span class="ti-pinterest"></span>
+                    <span class=""><ion-icon name="logo-pinterest"></ion-icon></span>
                   </a>
                   <a href="wwww.instagram.com">
-                    <span class="ti-instagram"></span>
+                    <span class=""><ion-icon name="logo-instagram"></ion-icon></span>
                   </a>
 							  </div>
 							</div>

@@ -25,13 +25,13 @@
       <div class="social-icons">
         <ul>
           <li>
-            <a href="www.facebook.com"><i class="fa fa-facebook"></i></a>
+            <a href="www.facebook.com"><ion-icon name="logo-facebook"></ion-icon></a>
           </li>
           <li>
-            <a href="www.twitter.com"><i class="fa fa-twitter"></i></a>
+            <a href="www.twitter.com"><ion-icon name="logo-twitter"></ion-icon></a>
           </li>
           <li>
-            <a href="www.pinterest.com"><i class="fa fa-pinterest"></i></a>
+            <a href="www.pinterest.com"><ion-icon name="logo-pinterest"></ion-icon></a>
           </li>
           <li class="diffrent">Share now</li>
         </ul>
@@ -64,10 +64,10 @@
                     </h5>
                     <div class="amenities-meta mb-10">
                       <a href="{% url 'detailview' i.category i.slug %}" class=""
-                        ><span class="ti-calendar"></span>{{ i.created }}</a
+                        ><span class=""><ion-icon name="calendar-number-outline"></ion-icon></span>{{ i.created }}</a
                       >
                       <a href="{% url 'detailview' i.category i.slug %}" class="ml-20"
-                        ><span class="ti-comment"></span>05</a
+                        ><span class=""><ion-icon name="pricetags-outline"></ion-icon></span>05</a
                       >
                     </div>
                     <p>
@@ -77,12 +77,12 @@
                     <div class="d-flex justify-content-between mt-20">
                       <div>
                         <a href="{% url 'detailview' i.category i.slug %}" class="blog-post-btn">
-                          Read More <span class="ti-arrow-right"></span>
+                          Read More Information <span class=""><ion-icon name="chevron-forward-circle-outline"></ion-icon></span>
                         </a>
                       </div>
                       <div class="category">
                         <a href="{% url 'category' i.category %}">
-                          <span class="ti-folder mr-1"></span> {{ i.category }}
+                          <span class="mr-1"><ion-icon name="folder-outline"></ion-icon></span> {{ i.category }}
                         </a>
                       </div>
                     </div>
@@ -109,10 +109,10 @@
                     </h5>
                     <div class="amenities-meta mb-10">
                       <a href="{% url 'detailview' i.category i.slug %}" class=""
-                        ><span class="ti-calendar"></span> {{ i.created }}</a
+                        ><span class=""><ion-icon name="calendar-number-outline"></ion-icon></span> {{ i.created }}</a
                       >
                       <a href="{% url 'detailview' i.category i.slug %}" class="ml-20"
-                        ><span class="ti-comment"></span>05</a
+                        ><span class=""><ion-icon name="pricetags-outline"></ion-icon></span>05</a
                       >
                     </div>
                     <p>
@@ -122,12 +122,12 @@
                     <div class="d-flex justify-content-between mt-20">
                       <div>
                         <a href="{% url 'detailview' i.category i.slug %}" class="blog-post-btn">
-                          Read More <span class="ti-arrow-right"></span>
+                          Read More Information <span class=""><ion-icon name="chevron-forward-circle-outline"></ion-icon></span>
                         </a>
                       </div>
                       <div class="category">
                         <a href="{% url 'category' i.category %}">
-                          <span class="ti-folder mr-1"></span> {{ i.category }}
+                          <span class="mr-1"><ion-icon name="folder-outline"></ion-icon></span> {{ i.category }}
                         </a>
                       </div>
                     </div>
@@ -184,9 +184,10 @@
           <div class="col-lg-4 sidebar-widgets">
               <div class="widget-wrap">
                 <div class="single-sidebar-widget search-widget">
-                  <form class="search-form" action="#">
-                    <input placeholder="Search Posts" name="search" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'">
-                    <button type="submit"><i class="fa fa-search"></i></button>
+                  <form class="search-form" action="/searchresult" method="get">
+                    
+                    <input placeholder="Search Posts" name="search" id="search" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'">
+                    <button type="submit"><ion-icon name="search-outline"></ion-icon></button>
                   </form>
                 </div>
 
@@ -236,31 +237,31 @@
                   </div>
                 </div>
 
-                <div class="single-sidebar-widget newsletter-widget">
+                <!-- <div class="single-sidebar-widget newsletter-widget">
                   <h4 class="newsletter-title">Newsletter</h4>
                   <div class="form-group mt-30">
                     <div class="col-autos">
-                      <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Enter email" onfocus="this.placeholder = ''"
+                      <input type="text" class="form-control" id="" placeholder="Enter email" onfocus="this.placeholder = ''"
                         onblur="this.placeholder = 'Enter email'">
                     </div>
                   </div>
                   <button class="bbtns d-block mt-20 w-100">Subcribe</button>
-                </div>
+                </div> -->
 
                   <div class="single-sidebar-widget share-widget">
                     <h4 class="share-title">Share this website</h4>
                     <div class="social-icons mt-20">
                       <a href="www.facebook.com">
-                        <span class="ti-facebook"></span>
+                        <span class=""><ion-icon name="logo-facebook"></ion-icon></span>
                       </a>
                       <a href="www.twitter.com">
-                        <span class="ti-twitter"></span>
+                        <span class=""><ion-icon name="logo-twitter"></ion-icon></span>
                       </a>
                       <a href="www.pinterest.com">
-                        <span class="ti-pinterest"></span>
+                        <span class=""><ion-icon name="logo-pinterest"></ion-icon></span>
                       </a>
                       <a href="wwww.instagram.com">
-                        <span class="ti-instagram"></span>
+                        <span class=""><ion-icon name="logo-instagram"></ion-icon></span>
                       </a>
                     </div>
                   </div>

@@ -4,9 +4,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from decouple import config
 urlpatterns = [
-    path(config('ADMIN'), admin.site.urls),
-    path('', include('controller.urls')),
+    path(f"{config('ADMIN')}/", admin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('', include('controller.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

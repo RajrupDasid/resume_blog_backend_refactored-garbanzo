@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework import permissions
-from .models import Blog, Comment, Contact
+from .models import Blog, Comment, Contact, NewsLetter
 # from .serializers import SearchSerializer
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
@@ -214,17 +214,44 @@ def privacyview(request):
     return render(request, 'privacy.html', context)
 
 
-@require_GET
-def robots_txt(request):
-    return HttpResponse(robots_txt_content, content_type="text/plain")
+@csrf_protect
+def newsletterview(request):
+    if request.method == "POST":
+        email = request.POST['email']
+        if len(email) < 5:
+            return HttpResponse(0)
+        else:
+            newsletter = NewsLetter(email=email)
+            newsletter.save()
+            return HttpResponse(1)
 
 
-robots_txt_content = """\
-User-agent: *
-Disallow: webstackpros360/admin
-Sitemap: https://webstackpros.net/sitemap.xml
-"""
+@csrf_protect
+def searchresult(request):
+    if request.method == "GET":
+        indexname = websitenames
+        search_query = request.GET["search"]
 
+        searchres = Blog.objects.filter(
+            Q(title__icontains=search_query) | Q(content__icontains=search_query) | Q(category__icontains=search_query))
+        paginated_number = 10
+        paginator = Paginator(searchres, paginated_number)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        categories = Blog.objects.values('category').annotate(
+            total=Count('category')).order_by('category')
+        # trending data
+        post_ids = Analytics.objects.filter(
+            post_clicks__gte=5).exclude(post_id__isnull=True).values('post_id')
+        trending_data = Blog.objects.filter(
+            _id__in=post_ids).order_by('-created')[:10]
+        context = {
+            'page_obj': page_obj,
+            'categories': categories,
+            'trending_data': trending_data,
+            'websitename': indexname,
+        }
+        return render(request, 'searchresult.html', context)
 
 # class SearchView(APIView):
 
