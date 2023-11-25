@@ -41,7 +41,7 @@ class CategorySitemap(Sitemap):
     def items(self):
         # Return queryset of dynamic URLs for category view
         # Replace YourCategoryModel with your actual model
-        return Blog.objects.all()
+        return Blog.objects.all().order_by('-created')
 
     def location(self, obj):
         # Return the URL for each category item

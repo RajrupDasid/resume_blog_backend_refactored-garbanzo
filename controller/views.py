@@ -119,7 +119,6 @@ def postcounter(request):
     if request.method == 'POST':
         # Assuming you have a post ID in the request data
         post_id = request.POST.get('postid')
-        print(post_id)
 
         if not post_id:
             return Response({'error': 'Post ID is required'}, status=status.HTTP_400_BAD_REQUEST)
@@ -275,12 +274,3 @@ def searchresult(request):
             'websitename': indexname,
         }
         return render(request, 'searchresult.html', context)
-
-# class SearchView(APIView):
-
-#     @method_decorator(cache_page(CACHE_TTL))
-#     def post(self, request, search_query, *args, **kwargs):
-#         search = Blog.objects.filter(
-#             Q(title__iexact=search_query) | Q(content__icontains=search_query) | Q(category__icontains=search_query))
-#         serializer = SearchSerializer(search, many=True)
-#         return Response(serializer.data)
