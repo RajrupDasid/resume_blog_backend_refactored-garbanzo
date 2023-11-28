@@ -30,7 +30,10 @@
     height: 100%;
     margin-left: 0px;
   }
-  
+  .tcontainer{
+    margin-left: 700px;
+  }
+
   .rightabout p {
     display: grid;
     max-width: 190px;
@@ -159,6 +162,9 @@
       font-size: 0.6rem;
       margin-left: 18px;
       margin-top: 59px; /* Full width text on smaller screens */
+    }
+    .tcontainer{
+      margin-left: -720px;
     }
   }
   

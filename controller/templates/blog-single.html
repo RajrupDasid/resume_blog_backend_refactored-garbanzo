@@ -99,13 +99,13 @@
                                   {% if next_post %}
                                   <div class="details">
                                       <p>Next Post</p>
-                                      <a href="{% url 'detailview' next_post.category next_post.slug %}"><h4>{{ next_post.title }}</h4></a>
+                                      <a href="{% url 'detailview' next_post.category next_post.slug %}" target="_blank"><h4>{{ next_post.title }}</h4></a>
                                   </div>
                                   <div class="arrow">
-                                      <a href="{% url 'detailview' next_post.category next_post.slug %}"><span class="lnr text-white lnr-arrow-right"></span></a>
+                                      <a href="{% url 'detailview' next_post.category next_post.slug %}" target="_blank"><span class="lnr text-white lnr-arrow-right"></span></a>
                                   </div>
                                   <div class="thumb">
-                                      <a href="{% url 'detailview' next_post.category next_post.slug %}"><img class="img-fluid" src="{{ next_post.thumbnail.url }}" alt="nextpost"style="
+                                      <a href="{% url 'detailview' next_post.category next_post.slug %}" target="_blank"><img class="img-fluid" src="{{ next_post.thumbnail.url }}" alt="nextpost"style="
                                         height: 60px;
                                         width: 70px;
                                     "></a>
@@ -304,16 +304,16 @@
 							<div class="single-sidebar-widget share-widget">
 							  <h4 class="share-title">Share this post</h4>
 							  <div class="social-icons mt-20">
-                  <a href="www.facebook.com">
+                  <a href="https://www.facebook.com" target="_blank">
                     <span class=""><ion-icon name="logo-facebook"></ion-icon></span>
                   </a>
-                  <a href="www.twitter.com">
+                  <a href="https://www.twitter.com" target="_blank">
                     <span class=""><ion-icon name="logo-twitter"></ion-icon></span>
                   </a>
-                  <a href="www.pinterest.com">
+                  <a href="https://www.pinterest.com" target="_blank">
                     <span class=""><ion-icon name="logo-pinterest"></ion-icon></span>
                   </a>
-                  <a href="wwww.instagram.com">
+                  <a href="https://www.instagram.com" target="_blank">
                     <span class=""><ion-icon name="logo-instagram"></ion-icon></span>
                   </a>
 							  </div>
