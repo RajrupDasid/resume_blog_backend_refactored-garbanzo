@@ -274,3 +274,14 @@ def searchresult(request):
             'websitename': indexname,
         }
         return render(request, 'searchresult.html', context)
+
+
+@cache_page(CACHE_TTL)
+def product(request):
+    if request.method == "GET":
+        context = {
+
+        }
+        return render(request, 'product.html', context)
+    if request.method == "POST":
+        pass

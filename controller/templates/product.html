@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block style %}
+<style>
+    .product{
+        margin-left: 87vh;
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+    .qrcode{
+      height: 320px; 
+      width: 240px; 
+      margin-left: 88vh; 
+    }
+  @media (max-width: 600px){
+    .qrcode {
+    height: 320px;
+    width: 240px;
+    margin-left: 5vh;
+}
+.product{
+        margin-left: 5vh;
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+
+  }
+</style>
+{% endblock %}
+{% block content %}
+<stripe-buy-button
+  buy-button-id="buy_btn_1OJr3tSFPHIKtSNjDzIVSaSM"
+  publishable-key="pk_live_51MUAzUSFPHIKtSNj4v40kZ26iQ33xHnqaN0dWQspmxvsemXEiEyevjXPcDuDm4pvSxLDl02AwCIPL4DIx04aTHN100N6uKBpfR"
+  class="product"
+>
+</stripe-buy-button>
+<br>
+<br>
+<img src="{% static 'qr/qr.png' %}" class="qrcode" alt="qrcode">
+{% endblock %}

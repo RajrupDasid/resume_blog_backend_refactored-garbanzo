@@ -7,8 +7,9 @@
     <section class="home-banner-area relative">
       <div class="container-fluid">
         <div class="row">
+          {%for featured_post in featured %}
           <div class="owl-carousel home-banner-owl">
-            {%for featured_post in featured %}
+    
             <div class="banner-img">
               <img class="img-fluid" src="{{ featured_post.thumbnail.url }}" alt="banner1" />
               <div class="text-wrapper">
@@ -19,8 +20,8 @@
                 </a>
               </div>
             </div>
-            {% endfor %}
           </div>
+          {% endfor %}
         </div>
       </div>
       <div class="social-icons">

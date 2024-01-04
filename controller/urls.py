@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index, blogdetailview, comment, postcounter, contactview, category, aboutus, termsview, privacyview, newsletterview, searchresult
+from .views import index, blogdetailview, comment, postcounter, contactview, category, aboutus, termsview, privacyview, newsletterview, searchresult, product
 from django.contrib.sitemaps.views import sitemap
 from .sitemaps import StaticViewSitemap, BlogSitemap, CategorySitemap
 from django.views.generic.base import TemplateView
@@ -25,10 +25,12 @@ urlpatterns = [
     path('analytics/', postcounter, name='analytics'),
     path('contactus/', contactview, name="contact"),
     path('aboutus/', aboutus, name='aboutus'),
+    path('product/', product, name='product'),
     path('newsletter/', newsletterview),
     path('searchresult/', searchresult, name='searchresult'),
     path('<str:category>/<str:slug>/', blogdetailview, name="detailview"),
     path('<str:category>/', category, name="category"),
+
 
 
     # path('search', SearchView.as_view(), name="search"),
